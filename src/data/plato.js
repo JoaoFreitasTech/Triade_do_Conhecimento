@@ -10,14 +10,6 @@ export default {
 
   hero: {
     eyebrow: 'O fundador da Academia',
-    topLeft: {
-      title: 'Platão de Atenas',
-      text: 'Aristocrata, lutador, poeta que, segundo a tradição, queimou os próprios versos depois de ouvir Sócrates.',
-    },
-    topRight: {
-      title: 'c. 428 – 348 a.C.',
-      text: 'Autor de cerca de trinta e cinco diálogos, todos preservados até hoje.',
-    },
     sideLeft: {
       title: 'O mundo das Formas',
       text: 'Por trás de tudo o que muda, Platão viu realidades eternas e perfeitas, as Formas, que só a razão pode contemplar.',
@@ -26,7 +18,6 @@ export default {
       title: 'A Academia',
       text: 'Por volta de 387 a.C. fundou, nos jardins de Academo, a escola que daria nome a todas as academias.',
     },
-    bottom: 'Tudo o que vemos é sombra de algo mais real. Platão convidou a filosofia a sair da caverna e olhar para o sol.',
     credits: ['Atenas', 'Academia', 'Caverna', 'República'],
   },
 

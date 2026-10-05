@@ -10,14 +10,6 @@ export default {
 
   hero: {
     eyebrow: 'O moscardo de Atenas',
-    topLeft: {
-      title: 'Sócrates de Atenas',
-      text: 'Filho de um escultor e de uma parteira, nunca escreveu uma linha e mesmo assim fundou a filosofia moral do Ocidente.',
-    },
-    topRight: {
-      title: 'c. 470 – 399 a.C.',
-      text: 'Conhecido pelos diálogos de Platão, pelas memórias de Xenofonte e pela sátira de Aristófanes.',
-    },
     sideLeft: {
       title: 'A arte de perguntar',
       text: 'Andava pela ágora interrogando generais, poetas e artesãos sobre o que é a coragem, a justiça, a virtude. E descobria que ninguém sabia.',
@@ -26,8 +18,15 @@ export default {
       title: 'O julgamento',
       text: 'Em 399 a.C. foi acusado de impiedade e de corromper a juventude. Condenado, recusou a fuga e bebeu a cicuta.',
     },
-    bottom: 'Uma vida sem exame não vale a pena ser vivida. Sócrates fez da pergunta um modo de vida e pagou por ela com a própria vida.',
     credits: ['Atenas', 'Ágora', 'Maiêutica', 'Cicuta'],
+    // Paisagem em camadas atrás do pôster (do fundo para a frente). speed: quanto a camada sobe
+    // enquanto a seção seguinte cobre o hero; quanto mais perto, mais rápido.
+    scene: [
+      { src: 'img/socrates-bg-0.webp', speed: '2vh' },
+      { src: 'img/socrates-bg-1.webp', speed: '6vh' },
+      { src: 'img/socrates-bg-2.webp', speed: '11vh' },
+      { src: 'img/socrates-bg-3.webp', speed: '18vh' },
+    ],
   },
 
   thesis: {

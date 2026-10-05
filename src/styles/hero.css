@@ -9,7 +9,18 @@
   position: sticky; top: 0; z-index: 0;
   height: 100vh; height: 100svh;
 }
+/* Paisagem em camadas (parallax) atrás do pôster. Cada camada sobe numa velocidade própria
+   conforme --cover (0 → 1 enquanto a seção seguinte cobre o hero). */
+.hero__scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.scene__layer {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: calc(100% + 20vh); /* sobra embaixo para a camada subir sem mostrar a borda */
+  max-width: none; object-fit: cover; object-position: 50% 30%;
+  transform: translate3d(0, calc(var(--cover, 0) * var(--speed, 0px) * -1), 0);
+  will-change: transform;
+}
 .hero__sticky {
+  position: relative; z-index: 1;
   height: 100%;
   padding: max(8rem, 66px) var(--gutter) max(2.4rem, 16px);
   transform: translateY(calc(var(--cover, 0) * -7%)) scale(calc(1 - var(--cover, 0) * .05));
@@ -28,13 +39,7 @@
   row-gap: max(1.4rem, 10px);
 }
 
-.poster__head {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 4rem;
-}
-.micro { max-width: 30rem; }
-.micro--r { justify-self: end; }
-.micro--r .micro-title { justify-content: flex-end; }
-.micro .micro-title { margin-bottom: .5em; }
+.poster__head { display: flex; justify-content: center; }
 .poster__eyebrow {
   display: flex; align-items: center; gap: .7em;
   font: 800 max(2.2rem, 13px) / 1 var(--f-wide); font-stretch: 125%;
@@ -97,11 +102,6 @@
   position: absolute; z-index: 3; left: 5.6rem; right: 5.6rem; bottom: 2rem;
   display: grid; gap: 2.2rem; justify-items: center;
 }
-.panel__bottom {
-  max-width: 84rem;
-  font: 700 var(--t-micro) / 1.35 var(--f-wide); font-stretch: 125%;
-  text-transform: uppercase; letter-spacing: .02em; text-align: center;
-}
 .panel__credits {
   width: 100%;
   display: flex; justify-content: space-between; align-items: center;
@@ -129,6 +129,13 @@
 
 /* Platão: pôster escuro, nome em itálico pontilhado (referência "White Suns"). */
 [data-theme='plato'] .poster__name { font-style: italic; font-weight: var(--wght, 640); letter-spacing: -.05em; }
+/* O itálico projeta as letras (e o til) para fora da caixa de cada letra, e tanto o overflow do
+   .ch quanto a máscara do .ch__in cortam o excesso. Folga com margem negativa igual nos dois:
+   a área visível cresce sem mudar o espaçamento. */
+[data-theme='plato'] .ch { padding: .3em .3em .02em; margin: -.3em calc(.012em - .3em) -.02em; }
+[data-theme='plato'] .ch__in { padding: .3em .3em 0; margin: -.3em -.3em 0; }
+/* a caixa ficou .3em mais alta em cima: 52% dela + .144em mantém a estrela no mesmo ponto da letra */
+[data-theme='plato'] .ch__star { top: calc(52% + .144em); }
 [data-theme='plato'] .ch__in { -webkit-mask-image: var(--stipple); mask-image: var(--stipple); -webkit-mask-size: 260px; mask-size: 260px; }
 [data-theme='plato'] .panel__bg { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--panel-fg) 14%, transparent); }
 
@@ -136,15 +143,12 @@
 @media (max-width: 649px) {
   .hero__sticky { padding-top: 64px; padding-bottom: 12px; }
   .poster { row-gap: 10px; }
-  .poster__head { grid-template-columns: 1fr; justify-items: center; gap: 0; }
-  .micro { display: none; }
   .poster__eyebrow { font-size: 1.15rem; }
   .panel__side, .panel__stars { display: none; }
   .panel__corner--tl, .panel__corner--tr { top: 1.4rem; }
   .panel__corner--tl, .panel__corner--bl { left: 1.4rem; }
   .panel__corner--tr, .panel__corner--br { right: 1.4rem; }
   .panel__foot { left: 3.4rem; right: 3.4rem; bottom: 1.4rem; gap: 1.4rem; }
-  .panel__bottom { font-size: .85rem; max-width: 30rem; }
   .panel__credits li:not(.panel__cue):nth-child(n + 2):nth-last-child(n + 2) { display: none; }
   .panel__credits { font-size: .8rem; }
 }

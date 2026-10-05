@@ -10,14 +10,6 @@ export default {
 
   hero: {
     eyebrow: 'O mestre dos que sabem',
-    topLeft: {
-      title: 'Aristóteles de Estagira',
-      text: 'Filho de médico, aluno de Platão por vinte anos, preceptor de Alexandre, o Grande.',
-    },
-    topRight: {
-      title: '384 – 322 a.C.',
-      text: 'Escreveu sobre lógica, física, biologia, ética, política, retórica e poesia.',
-    },
     sideLeft: {
       title: 'Da observação ao saber',
       text: 'Para Aristóteles, todo conhecimento começa pelos sentidos. A forma não está num céu separado: está nas próprias coisas.',
@@ -26,7 +18,6 @@ export default {
       title: 'O Liceu',
       text: 'Em 335 a.C. fundou sua escola no Liceu, onde ensinava caminhando pelo passeio coberto. Daí o nome “peripatéticos”.',
     },
-    bottom: 'A virtude nasce do hábito, e a felicidade é uma vida inteira vivida segundo a razão. Aristóteles trouxe a filosofia do céu das Formas para o chão da experiência.',
     credits: ['Estagira', 'Liceu', 'Lógica', 'Política'],
   },
 

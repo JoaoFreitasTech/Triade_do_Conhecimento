@@ -35,15 +35,19 @@ function hero(p) {
   const side = (s, cls) =>
     `<div class="panel__side ${cls}"><p class="micro-title">${sparkle3()}${esc(s.title)}</p><p class="micro-text">${esc(s.text)}</p></div>`;
   const stars = (cls) => `<div class="panel__stars ${cls}" aria-hidden="true">${I.sparkle()}${I.sparkle()}${I.sparkle()}</div>`;
+  const scene = h.scene
+    ? `<div class="hero__scene" aria-hidden="true">${h.scene
+        .map((l) => `<img class="scene__layer" src="${l.src}" alt="" decoding="async" style="--speed:${l.speed}">`)
+        .join('')}</div>`
+    : '';
   return `
   <section class="hero" data-hero aria-labelledby="${p.id}-title">
+    ${scene}
     <div class="hero__sticky">
       <div class="poster" data-poster>
         ${rule('poster__rule')}
         <div class="poster__head">
-          <div class="micro micro--l"><p class="micro-title">${esc(h.topLeft.title)}</p><p class="micro-text">${esc(h.topLeft.text)}</p></div>
           <p class="poster__eyebrow">${I.sparkle()}<span>${esc(h.eyebrow)}</span>${I.sparkle()}</p>
-          <div class="micro micro--r"><p class="micro-title">${esc(h.topRight.title)}</p><p class="micro-text">${esc(h.topRight.text)}</p></div>
         </div>
         <h1 class="poster__name" id="${p.id}-title" aria-label="${esc(p.name)}" data-name><span class="poster__name-in" aria-hidden="true">${heroName(p)}</span></h1>
         ${rule('poster__rule poster__rule--mid')}
@@ -57,7 +61,6 @@ function hero(p) {
           ${side(h.sideLeft, 'panel__side--l')}
           ${side(h.sideRight, 'panel__side--r')}
           <div class="panel__foot">
-            <p class="panel__bottom">${esc(h.bottom)}</p>
             <ul class="panel__credits">
               ${h.credits.slice(0, 2).map((c) => `<li>${esc(c)}</li>`).join('')}
               <li class="panel__cue"><a class="hero__cue" href="#${p.id}-tese" data-anchor><span>Role para descobrir</span><i aria-hidden="true"></i></a></li>

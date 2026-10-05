@@ -58,7 +58,7 @@ const siteTitle = document.title;
 function movePill() {
   const active = tabs.find((t) => t.getAttribute('aria-current') === 'page');
   if (!active) return;
-  pill.style.setProperty('--x', `${active.offsetLeft - 4}px`);
+  pill.style.setProperty('--x', `${active.offsetLeft}px`);
   pill.style.setProperty('--w', `${active.offsetWidth}px`);
 }
 window.addEventListener('resize', movePill);
