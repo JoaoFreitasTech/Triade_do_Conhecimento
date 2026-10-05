@@ -15,6 +15,8 @@ const prerender = () => ({
 });
 
 export default defineConfig({
+  // Caminhos relativos: o site funciona em subpasta (GitHub Pages: /Triade_do_Conhecimento/) e na raiz.
+  base: './',
   plugins: [prerender()],
   build: { chunkSizeWarningLimit: 900 },
 });

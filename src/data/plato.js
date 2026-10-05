@@ -5,7 +5,7 @@ export default {
   greek: 'ΠΛΑΤΩΝ',
   dates: 'c. 428 – 348 a.C.',
   theme: 'plato',
-  model: { src: '/models/plato.glb', scale: 0.9, yaw: 0 },
+  model: { src: 'models/plato.glb', scale: 0.9, yaw: 0 },
   readMore: { label: 'Ler mais', href: 'https://plato.stanford.edu/entries/plato/' },
 
   hero: {
@@ -173,7 +173,7 @@ export default {
 
   life: {
     title: 'A vida de Platão',
-    image: '/img/plato.jpg',
+    image: 'img/plato.jpg',
     imageAlt: 'Detalhe de A Escola de Atenas, de Rafael: Platão aponta para o céu e Aristóteles estende a mão para a terra, no centro de uma grande arcada.',
     imageCredit: 'Rafael, A Escola de Atenas (detalhe), 1509–1511 · Museus Vaticanos, domínio público',
     focus: '45% 62%',

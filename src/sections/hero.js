@@ -91,7 +91,7 @@ export function initHero(root, p, env) {
 
   stage.attach(slot);
   if (stage.failed) {
-    slot.innerHTML = `<img class="hero__fallback" src="/img/${p.id}-bust.png" alt="">`;
+    slot.innerHTML = `<img class="hero__fallback" src="img/${p.id}-bust.png" alt="">`;
   }
   const relayout = () => layout(root, stage);
   relayout();

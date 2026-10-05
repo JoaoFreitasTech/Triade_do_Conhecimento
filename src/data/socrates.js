@@ -5,7 +5,7 @@ export default {
   greek: 'ΣΩΚΡΑΤΗΣ',
   dates: 'c. 470 – 399 a.C.',
   theme: 'socrates',
-  model: { src: '/models/socrates.glb', scale: 1, yaw: 0 },
+  model: { src: 'models/socrates.glb', scale: 1, yaw: 0 },
   readMore: { label: 'Ler mais', href: 'https://plato.stanford.edu/entries/socrates/' },
 
   hero: {
@@ -169,7 +169,7 @@ export default {
 
   life: {
     title: 'A vida de Sócrates',
-    image: '/img/socrates.jpg',
+    image: 'img/socrates.jpg',
     imageAlt: 'A Morte de Sócrates, pintura de Jacques-Louis David: Sócrates, sentado na cama, ergue a mão enquanto recebe a taça de cicuta, cercado por discípulos em lamento.',
     imageCredit: 'Jacques-Louis David, A Morte de Sócrates, 1787 · The Met, domínio público',
     focus: '50% 40%',

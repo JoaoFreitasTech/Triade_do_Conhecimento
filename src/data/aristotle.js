@@ -5,7 +5,7 @@ export default {
   greek: 'ΑΡΙΣΤΟΤΕΛΗΣ',
   dates: '384 – 322 a.C.',
   theme: 'aristotle',
-  model: { src: '/models/aristotle.glb', scale: 1, yaw: 0 },
+  model: { src: 'models/aristotle.glb', scale: 1, yaw: 0 },
   readMore: { label: 'Ler mais', href: 'https://plato.stanford.edu/entries/aristotle/' },
 
   hero: {
@@ -158,7 +158,7 @@ export default {
 
   life: {
     title: 'A vida de Aristóteles',
-    image: '/img/aristotle.jpg',
+    image: 'img/aristotle.jpg',
     imageAlt: 'Aristóteles com um busto de Homero, de Rembrandt: um homem de chapéu negro e manto dourado pousa a mão sobre um busto de mármore.',
     imageCredit: 'Rembrandt, Aristóteles com um busto de Homero, 1653 · The Met, domínio público',
     focus: '45% 35%',
