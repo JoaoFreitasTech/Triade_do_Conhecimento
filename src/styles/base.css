@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Base: tokens, tema por filósofo, tipografia fluida, botões, grão
+   ========================================================================== */
+
+/* Tipografia fluida como no casadisolare.com: 1rem = 10px na largura de referência
+   (375px no celular, 1440px no desktop) e tudo escala com a viewport. */
+html {
+  font-size: calc(100vw / 375 * 10);
+  -webkit-text-size-adjust: 100%;
+}
+@media (min-width: 650px) {
+  html { font-size: calc(100vw / 1440 * 10); }
+}
+@media (min-width: 650px) and (max-width: 1023px) {
+  html { font-size: calc(100vw / 1100 * 10); }
+}
+
+:root {
+  --ease: cubic-bezier(.19, 1, .22, 1);
+  --ease-io: cubic-bezier(.77, 0, .18, 1);
+  --f-display: 'Fraunces Variable', 'Times New Roman', serif;
+  --f-wide: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
+  --f-greek: 'Noto Serif Display Variable', 'Times New Roman', serif;
+  --gutter: 4rem;
+  --t-body: max(1.8rem, 15px);
+  --t-small: max(1.4rem, 12px);
+  --t-micro: max(1rem, 8.5px);
+}
+@media (max-width: 649px) {
+  :root { --gutter: 1.6rem; --t-body: 1.6rem; --t-small: 1.25rem; --t-micro: .95rem; }
+}
+
+/* ----- Temas ----- */
+[data-theme='socrates'] {
+  --a-bg: #F2AD62; --a-fg: #0E1A1B; --a-hi: #0E1A1B;
+  --b-bg: #0B0C0B; --b-fg: #F2E3CB; --b-hi: #F2AD62;
+  --panel-bg: #0B0C0B; --panel-fg: #F2AD62;
+  --sh-bg: #0E1A1B; --sh-fg: #F2AD62;
+  --ember: #FF9A3C; --tint: #F2AD62;
+}
+[data-theme='plato'] {
+  --a-bg: #0C0C0B; --a-fg: #E9E2D4; --a-hi: #F7F1E6;
+  --b-bg: #E9E2D4; --b-fg: #0C0C0B; --b-hi: #0C0C0B;
+  --panel-bg: #161513; --panel-fg: #E9E2D4;
+  --sh-bg: #E9E2D4; --sh-fg: #0C0C0B;
+  --ember: #FFF4DF; --tint: #DCD3C3;
+}
+[data-theme='aristotle'] {
+  --a-bg: #E8DECC; --a-fg: #102120; --a-hi: #102120;
+  --b-bg: #0D1716; --b-fg: #E8DECC; --b-hi: #E79C48;
+  --panel-bg: #0D1716; --panel-fg: #E8DECC;
+  --sh-bg: #102120; --sh-fg: #E8DECC;
+  --ember: #FFB25E; --tint: #E8DECC;
+}
+
+.sec-a, .hero, .sf, .curtain { --bg: var(--a-bg); --fg: var(--a-fg); --hi: var(--a-hi); }
+.sec-b { --bg: var(--b-bg); --fg: var(--b-fg); --hi: var(--b-hi); }
+.sec-a, .sec-b, .hero, .sf, .curtain {
+  --line: color-mix(in srgb, var(--fg) 20%, transparent);
+  --mute: color-mix(in srgb, var(--fg) 66%, transparent);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* ----- Reset ----- */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, ol, ul, li, figure, blockquote { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+img, svg, canvas { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+cite { font-style: normal; }
+input { font: inherit; }
+
+body {
+  background: var(--a-bg);
+  color: var(--a-fg);
+  font-family: var(--f-display);
+  font-size: var(--t-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  transition: background-color .6s;
+}
+main:focus { outline: none; }
+::selection { background: var(--fg, #000); color: var(--bg, #fff); }
+
+:focus-visible { outline: 2px solid var(--hi, currentColor); outline-offset: 4px; border-radius: 4px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: fixed; left: 1.6rem; top: 1.6rem; z-index: 200;
+  padding: 1.2rem 2rem; border-radius: 99px;
+  background: var(--sh-bg); color: var(--sh-fg);
+  font: 700 var(--t-small) / 1 var(--f-wide);
+  transform: translateY(-300%);
+}
+.skip:focus { transform: none; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ----- Tipografia utilitária ----- */
+.micro-title, .micro-text, .kicker, .wide {
+  font-family: var(--f-wide);
+  font-stretch: 125%;
+  text-transform: uppercase;
+}
+.micro-title {
+  display: flex; align-items: center; gap: .6em;
+  font-weight: 800; font-size: var(--t-micro); letter-spacing: .03em; line-height: 1.2;
+  margin-bottom: .9em;
+}
+.micro-text {
+  font-weight: 600; font-size: calc(var(--t-micro) * .9); line-height: 1.38; letter-spacing: .02em;
+  text-align: justify; text-align-last: left; hyphens: auto;
+}
+.kicker {
+  display: inline-flex; align-items: center; gap: .8em;
+  font-weight: 800; font-size: var(--t-micro); letter-spacing: .08em;
+}
+.kicker .i-sparkle { width: 1.1em; fill: currentColor; }
+.tri { display: inline-flex; gap: .15em; }
+.tri .i-sparkle { width: .8em; fill: currentColor; }
+
+.i-sparkle, .i-star8, .i-longstar, .i-dagger, .i-cap { fill: currentColor; stroke: currentColor; stroke-width: 0; }
+.i-cap circle[fill='none'] { stroke-width: 1.6; }
+.i-arrow { width: 1.6rem; min-width: 14px; height: auto; }
+
+.uline { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; transition: background-size .6s var(--ease); }
+.uline:hover { background-size: 0 1px; background-position: 100% 100%; }
+
+/* ----- Botão (pill + círculo, como o "Purchase Solare") ----- */
+.btn {
+  --h: max(4.8rem, 42px);
+  position: relative;
+  display: inline-flex; align-items: center;
+  height: var(--h); padding-left: max(2.4rem, 18px);
+  border-radius: 99px;
+  background: var(--fg); color: var(--bg);
+  font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%;
+  text-transform: uppercase; letter-spacing: .06em;
+  isolation: isolate; overflow: hidden;
+  transition: transform .6s var(--ease);
+}
+.btn__label { position: relative; z-index: 1; padding-right: max(1.6rem, 12px); transition: color .5s var(--ease); white-space: nowrap; }
+.btn__circle {
+  position: relative; z-index: 1;
+  display: grid; place-items: center;
+  width: calc(var(--h) - 8px); height: calc(var(--h) - 8px); margin: 4px;
+  border-radius: 50%;
+  background: var(--bg); color: var(--fg);
+  transition: transform .6s var(--ease);
+}
+.btn::before {
+  content: ''; position: absolute; z-index: 0; right: 4px; top: 4px; bottom: 4px;
+  width: calc(var(--h) - 8px); border-radius: 99px;
+  background: var(--bg);
+  transition: width .7s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::before { width: calc(100% - 8px); }
+  .btn:hover .btn__label { color: var(--fg); }
+  .btn:hover .btn__circle { transform: rotate(-45deg); }
+  .btn:hover .btn__circle:has(.i-arrow path[d^='M4 12']) { transform: scale(1.08); }
+}
+.btn--sm { --h: max(4.4rem, 40px); }
+
+.circle-btn {
+  display: grid; place-items: center;
+  width: max(5.6rem, 46px); height: max(5.6rem, 46px);
+  border-radius: 50%; border: 1px solid var(--line);
+  transition: background-color .5s var(--ease), color .5s var(--ease), border-color .5s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .circle-btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+}
+
+/* ----- Réguas do pôster ----- */
+.rule {
+  display: flex; align-items: center; gap: max(1.2rem, 8px);
+  color: var(--fg); height: max(1.8rem, 14px);
+}
+.rule__line { flex: 1; height: max(2px, .2rem); background: currentColor; transform-origin: left center; }
+.rule .i-cap { width: max(3.4rem, 26px); flex: none; }
+.rule .i-sparkle { width: max(1.6rem, 12px); flex: none; }
+.rule .i-star8 { width: max(2.4rem, 18px); flex: none; }
+
+/* ----- Grão global (textura de papel/filme dos pôsteres) ----- */
+.grain {
+  position: fixed; inset: -50%; z-index: 120;
+  width: 200%; height: 200%;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 220px;
+  opacity: .5;
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-4%, 3%); }
+  40% { transform: translate(3%, -5%); }
+  60% { transform: translate(-6%, -2%); }
+  80% { transform: translate(5%, 4%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Pontilhado (texto "WHITE SUNS"): máscara de pontos aleatórios aplicada ao texto. */
+.stipple {
+  -webkit-mask-image: var(--stipple);
+  mask-image: var(--stipple);
+  -webkit-mask-size: 260px;
+  mask-size: 260px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  /* 0s (e não .01ms): com duração > 0 toda mudança de propriedade vira transição e as medições leem valores antigos */
+  *, *::before, *::after { transition-duration: 0s !important; transition-delay: 0s !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}

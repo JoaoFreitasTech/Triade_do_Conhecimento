@@ -1,0 +1,10 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/noto-serif-display/wdth.css';
+@import '@fontsource-variable/noto-serif-display/wdth-italic.css';
+
+@import './base.css';
+@import './chrome.css';
+@import './hero.css';
+@import './sections.css';

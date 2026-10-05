@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>html, body { margin: 0; background: transparent; } #slot { width: 800px; height: 1000px; position: relative; }</style>
+</head>
+<body>
+  <div id="slot"></div>
+  <script type="module">
+    // Renderiza um busto com transparência para servir de imagem reserva (navegadores sem WebGL).
+    import { BustStage } from '/src/webgl/BustStage.js';
+    import { byId, themes } from '/src/data/index.js';
+    const p = byId[new URLSearchParams(location.search).get('id')];
+    const stage = new BustStage({ reduceMotion: true });
+    stage.attach(document.getElementById('slot'));
+    const entry = await stage.load(p.model);
+    stage.setModel(entry, themes[p.theme]);
+    stage.setFrame({ cx: 400, top: 30, bottom: 1000, maxW: 760, fade: 0.3 });
+    stage.state.reveal = 1;
+    stage.setActive(true);
+    setTimeout(() => (document.title = 'ready'), 1200);
+  </script>
+</body>
+</html>

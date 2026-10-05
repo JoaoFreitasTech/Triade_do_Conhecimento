@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    html,
+    body {
+      margin: 0;
+      background: #222
+    }
+
+    canvas {
+      display: block
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+    import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+    import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+    const q = new URLSearchParams(location.search);
+    const url = q.get('m');
+    const W = 1600, H = 500;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(W, H); renderer.setScissorTest(true);
+    document.body.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x333333, 1.2));
+    const dl = new THREE.DirectionalLight(0xffffff, 2); dl.position.set(1, 1, 2); scene.add(dl);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xd8d2c4, roughness: 0.7 });
+    const group = new THREE.Group(); scene.add(group);
+    function done(obj) {
+      obj.traverse(o => { if (o.isMesh) { o.material = mat; } });
+      group.add(obj);
+      const box = new THREE.Box3().setFromObject(group);
+      const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+      group.position.sub(c);
+      const r = Math.max(s.x, s.y, s.z);
+      const cam = new THREE.PerspectiveCamera(30, (W / 4) / H, r / 100, r * 10);
+      const views = [[0, 0, 1], [1, 0, 1], [1, 0, 0], [0, 0, -1]];
+      const up = q.get('up') || 'y';
+      views.forEach((v, i) => {
+        const d = new THREE.Vector3(...v).normalize().multiplyScalar(r * 2.2);
+        if (up === 'z') { cam.up.set(0, 0, 1); d.set(v[0], -v[2], 0).normalize().multiplyScalar(r * 2.2); }
+        else cam.up.set(0, 1, 0);
+        cam.position.copy(d); cam.lookAt(0, 0, 0);
+        dl.position.copy(cam.position).add(new THREE.Vector3(r, r, 0));
+        renderer.setViewport(i * W / 4, 0, W / 4, H); renderer.setScissor(i * W / 4, 0, W / 4, H);
+        renderer.render(scene, cam);
+      });
+      document.title = 'ready ' + s.toArray().map(n => n.toFixed(2)).join('x');
+    }
+    if (url.endsWith('.stl')) new STLLoader().load(url, g => { g.computeVertexNormals(); done(new THREE.Mesh(g, mat)); });
+    else new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(url, g => done(g.scene));
+  </script>
+</body>
+
+</html>

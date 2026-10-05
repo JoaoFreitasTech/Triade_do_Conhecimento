@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><body><script>
+// Redimensiona/recorta imagens no navegador e devolve JPEG em base64 (usado por tools/resize.js).
+window.resize = async (src, maxW, crop, quality) => {
+  const img = new Image(); img.src = src; await img.decode();
+  const [cx, cy, cw, ch] = crop || [0, 0, 1, 1];
+  const sw = img.naturalWidth * cw, sh = img.naturalHeight * ch;
+  const w = Math.min(maxW, Math.round(sw)), h = Math.round(sh * w / sw);
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
+  g.drawImage(img, img.naturalWidth * cx, img.naturalHeight * cy, sw, sh, 0, 0, w, h);
+  return { w, h, data: c.toDataURL('image/jpeg', quality || 0.82).split(',')[1] };
+};
+</script>

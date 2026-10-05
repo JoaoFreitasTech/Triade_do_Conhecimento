@@ -1,0 +1,21 @@
+# Dependências e build (recriados com npm install / npm run build)
+node_modules/
+dist/
+
+# Arquivos grandes ou temporários das ferramentas
+tools/shots/
+tools/raw/
+*.log
+
+# Variáveis de ambiente e segredos (nenhum existe hoje; proteção para o futuro)
+.env
+.env.*
+!.env.example
+
+# Sistema e editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+.claude/

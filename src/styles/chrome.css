@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Cabeçalho fixo, cortina de transição entre abas e rodapé
+   ========================================================================== */
+
+/* ----- Cabeçalho (pílula com as abas, como o menu do Solare) ----- */
+.sh {
+  position: fixed; z-index: 60;
+  top: max(1.6rem, 12px); left: var(--gutter); right: var(--gutter);
+  display: flex; align-items: center; justify-content: space-between; gap: 1.6rem;
+  pointer-events: none;
+  transition: transform .8s var(--ease);
+}
+.sh > * { pointer-events: auto; }
+.sh.is-hidden { transform: translateY(calc(-100% - 3rem)); }
+
+.sh__logo {
+  display: inline-flex; align-items: center; gap: .8em;
+  height: max(4.4rem, 40px); padding: 0 max(2rem, 16px);
+  border-radius: 99px;
+  background: var(--sh-bg); color: var(--sh-fg);
+  font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%;
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.sh__logo .i-sparkle { width: max(1.4rem, 12px); transition: transform 1s var(--ease); }
+.sh__logo:hover .i-sparkle { transform: rotate(180deg); }
+
+.sh__nav {
+  position: relative;
+  display: flex; align-items: center;
+  padding: 4px; border-radius: 99px;
+  background: var(--sh-bg);
+}
+.sh__pill {
+  position: absolute; top: 4px; bottom: 4px; left: 0;
+  width: var(--w, 0); transform: translateX(var(--x, 0));
+  border-radius: 99px; background: var(--sh-fg);
+  transition: transform .8s var(--ease), width .8s var(--ease), background-color .6s;
+}
+.sh__link {
+  position: relative; z-index: 1;
+  display: grid; place-items: center;
+  height: max(3.6rem, 32px); padding: 0 max(2rem, 14px);
+  border-radius: 99px;
+  color: var(--sh-fg);
+  font: 700 var(--t-micro) / 1 var(--f-wide); font-stretch: 112%;
+  text-transform: uppercase; letter-spacing: .08em;
+  transition: color .6s var(--ease);
+}
+.sh__link[aria-current='page'] { color: var(--sh-bg); }
+.sh__cta { --bg: var(--sh-fg); --fg: var(--sh-bg); }
+
+@media (max-width: 649px) {
+  .sh { left: 1rem; right: 1rem; top: 1rem; gap: .6rem; }
+  .sh__logo { padding: 0; width: 40px; justify-content: center; }
+  .sh__logo span { display: none; }
+  .sh__cta { display: none; }
+  .sh__nav { flex: 1; justify-content: space-between; }
+  .sh__link { flex: 1; padding: 0 8px; font-size: 9.5px; letter-spacing: .04em; font-stretch: 100%; }
+}
+
+/* ----- Cortina (carregamento e troca de abas) ----- */
+.curtain {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+}
+.curtain.is-active { clip-path: inset(0); visibility: visible; }
+.curtain__inner {
+  width: min(120rem, calc(100vw - 2 * var(--gutter)));
+  display: grid; gap: 3rem; justify-items: center; text-align: center;
+}
+.curtain__rule { width: 100%; }
+.curtain__greek {
+  font: 400 max(1.8rem, 13px) / 1 var(--f-greek);
+  letter-spacing: .5em; margin-right: -.5em;
+}
+.curtain__name {
+  font: italic 300 16rem / .9 var(--f-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 0;
+  letter-spacing: -.04em;
+}
+.curtain__count {
+  font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%; letter-spacing: .2em;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 649px) {
+  .curtain__name { font-size: 6.4rem; }
+}
+
+/* ----- Rodapé ----- */
+.sf {
+  position: relative; z-index: 2;
+  padding: 14rem var(--gutter) 3rem;
+}
+.sf__top { display: grid; justify-items: center; gap: 3rem; }
+.sf__thanks {
+  font: italic 300 13rem / .95 var(--f-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 0;
+  letter-spacing: -.045em; text-align: center;
+}
+.sf__flourish { width: 42rem; color: var(--fg); }
+.sf__cols {
+  display: grid; grid-template-columns: 1fr 1.4fr 2fr 1.4fr; gap: 4rem;
+  margin-top: 10rem; padding-top: 4rem;
+  border-top: 1px solid var(--line);
+}
+.sf__h {
+  font: 800 var(--t-micro) / 1.2 var(--f-wide); font-stretch: 125%;
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 2rem;
+}
+.sf__col ul { display: grid; gap: 1rem; }
+.sf__col li, .sf__about {
+  font: 500 var(--t-small) / 1.5 var(--f-wide);
+}
+.sf__col a.uline { padding-bottom: 2px; }
+.sf__credits li { color: var(--mute); }
+.sf__credits a { color: var(--fg); }
+.sf__about { color: var(--mute); }
+.sf__bottom {
+  display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap;
+  margin-top: 10rem;
+  font: 700 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.sf__bottom button { text-transform: inherit; letter-spacing: inherit; padding-bottom: 3px; }
+
+@media (max-width: 649px) {
+  .sf { padding-top: 9rem; }
+  .sf__thanks { font-size: 6.2rem; }
+  .sf__flourish { width: 28rem; }
+  .sf__cols { grid-template-columns: 1fr 1fr; gap: 4rem 2rem; margin-top: 6rem; }
+  .sf__col--wide { grid-column: 1 / -1; order: 3; }
+  .sf__col:last-child { grid-column: 1 / -1; }
+  .sf__bottom { justify-content: center; text-align: center; margin-top: 6rem; }
+}
