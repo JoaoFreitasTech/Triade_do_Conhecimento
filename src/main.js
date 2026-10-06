@@ -8,6 +8,7 @@ import { installTextures } from './core/textures.js';
 import { BustStage } from './webgl/BustStage.js';
 import { initHero, heroPrepare, heroIntro } from './sections/hero.js';
 import { initThesis, initIdeas, initFeatured, initLab, initGlossary, initLife, initNext } from './sections/content.js';
+import { initScenes } from './sections/scene.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,6 +53,10 @@ const curtainGreek = curtain.querySelector('[data-curtain-greek]');
 const curtainCount = curtain.querySelector('[data-count]');
 const articles = Object.fromEntries([...document.querySelectorAll('[data-ph]')].map((el) => [el.dataset.ph, el]));
 const themeColor = document.querySelector('meta[name="theme-color"]');
+// O rodapé é comum às três abas: mostra só a paisagem do filósofo atual (se ele tiver uma).
+const footer = document.querySelector('[data-footer]');
+const footerScenes = [...footer.querySelectorAll('[data-scene-for]')];
+initScenes(footer, null, { reduce });
 // Nome do site: vem do <title> do index.html; a aba mostra "Filósofo · Nome do site".
 const siteTitle = document.title;
 
@@ -76,6 +81,7 @@ function setChrome(p) {
   header.classList.remove('is-hidden');
   lastY = 0;
   document.body.dataset.theme = p.theme;
+  footerScenes.forEach((el) => { el.hidden = el.dataset.sceneFor !== p.id; });
   tabs.forEach((t) => (t.dataset.tab === p.id ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current')));
   readMore.href = p.readMore.href;
   themeColor.setAttribute('content', themes[p.theme].aBg);
@@ -115,7 +121,7 @@ function activate(p) {
   const root = articles[p.id];
   const env = { stage, reduce, lenis, theme: themes[p.theme] };
   ctx = gsap.context(() => {
-    const cleanups = [initHero, initThesis, initIdeas, initFeatured, initLab, initGlossary, initLife, initNext]
+    const cleanups = [initHero, initThesis, initIdeas, initFeatured, initLab, initGlossary, initLife, initNext, initScenes]
       .map((init) => init(root, p, env))
       .filter(Boolean);
     return () => cleanups.forEach((c) => c());

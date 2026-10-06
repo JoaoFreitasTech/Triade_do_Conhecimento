@@ -9,14 +9,15 @@
   position: sticky; top: 0; z-index: 0;
   height: 100vh; height: 100svh;
 }
-/* Paisagem em camadas (parallax) atrás do pôster. Cada camada sobe numa velocidade própria
-   conforme --cover (0 → 1 enquanto a seção seguinte cobre o hero). */
-.hero__scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+/* Paisagem em camadas (parallax). Cada camada sobe --speed × --amp enquanto --shift vai de 0 a 1;
+   no hero, --shift é o --cover (0 → 1 enquanto a seção seguinte cobre o hero). */
+.hero__scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; --shift: var(--cover, 0); }
 .scene__layer {
   position: absolute; left: 0; top: 0;
-  width: 100%; height: calc(100% + 20vh); /* sobra embaixo para a camada subir sem mostrar a borda */
+  /* sobra embaixo para a camada subir sem mostrar a borda (12vh = maior velocidade) */
+  width: 100%; height: calc(100% + 12vh * var(--amp, 1));
   max-width: none; object-fit: cover; object-position: 50% 30%;
-  transform: translate3d(0, calc(var(--cover, 0) * var(--speed, 0px) * -1), 0);
+  transform: translate3d(0, calc(var(--shift, 0) * var(--speed, 0px) * var(--amp, 1) * -1), 0);
   will-change: transform;
 }
 .hero__sticky {
@@ -97,6 +98,16 @@
 .panel__side { position: absolute; z-index: 3; top: 30%; width: 19rem; }
 .panel__side--l { left: 5.6rem; }
 .panel__side--r { right: 5.6rem; }
+
+/* Com paisagem ao fundo, o painel fica transparente para mostrar o parallax; os textos laterais
+   ganham um vidro escuro para continuarem legíveis sobre a foto. */
+.hero--scene .panel__bg { background: transparent; }
+.hero--scene .panel__side {
+  padding: 1.6rem 1.8rem; margin: -1.6rem -1.8rem;
+  border-radius: max(1.4rem, 10px);
+  background: color-mix(in srgb, var(--panel-bg) 55%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
 
 .panel__foot {
   position: absolute; z-index: 3; left: 5.6rem; right: 5.6rem; bottom: 2rem;

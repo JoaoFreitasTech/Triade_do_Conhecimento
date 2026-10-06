@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const pad = (n) => String(n).padStart(2, '0');
 const listen = (el, type, fn, opts) => {
   el.addEventListener(type, fn, opts);
   return () => el.removeEventListener(type, fn, opts);
@@ -220,7 +219,6 @@ export function initGlossary(root, p, env) {
   const sec = root.querySelector('[data-gloss]');
   if (!sec) return;
   const items = [...sec.querySelectorAll('.gterm')];
-  const count = sec.querySelector('[data-gloss-i]');
   const stage = sec.querySelector('.gloss__stage');
   let i = 0;
   const show = (k, dir = 1) => {
@@ -228,7 +226,6 @@ export function initGlossary(root, p, env) {
     i = (k + items.length) % items.length;
     const next = items[i];
     if (prev === next) return;
-    count.textContent = pad(i + 1);
     prev.setAttribute('aria-hidden', 'true');
     next.removeAttribute('aria-hidden');
     sec.classList.remove('is-drawn');

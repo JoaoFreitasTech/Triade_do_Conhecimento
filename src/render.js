@@ -19,6 +19,19 @@ const rule = (cls = '') =>
   `<span class="rule__line"></span>${I.star8()}<span class="rule__line"></span>${I.sparkle()}` +
   `<span class="rule__line"></span>${I.capR}</div>`;
 
+/* ---------- Paisagem em camadas (parallax) ---------- */
+
+const sceneLayers = (layers, lazy = false) =>
+  layers
+    .map((l) => `<img class="scene__layer" src="${l.src}" alt="" decoding="async"${lazy ? ' loading="lazy"' : ''} style="--speed:${l.speed}">`)
+    .join('');
+// Fundo de uma seção clara: a paisagem fica presa à tela enquanto a seção passa (ver initScenes).
+const secScene = (p, attrs = '') =>
+  p.scene
+    ? `<div class="sec-scene" aria-hidden="true" data-scene${attrs}><div class="sec-scene__pin">${sceneLayers(p.scene, true)}</div></div>`
+    : '';
+const sceneCls = (p) => (p.scene ? ' has-scene' : '');
+
 /* ---------- Hero (pôster) ---------- */
 
 function heroName(p) {
@@ -35,14 +48,9 @@ function hero(p) {
   const side = (s, cls) =>
     `<div class="panel__side ${cls}"><p class="micro-title">${sparkle3()}${esc(s.title)}</p><p class="micro-text">${esc(s.text)}</p></div>`;
   const stars = (cls) => `<div class="panel__stars ${cls}" aria-hidden="true">${I.sparkle()}${I.sparkle()}${I.sparkle()}</div>`;
-  const scene = h.scene
-    ? `<div class="hero__scene" aria-hidden="true">${h.scene
-        .map((l) => `<img class="scene__layer" src="${l.src}" alt="" decoding="async" style="--speed:${l.speed}">`)
-        .join('')}</div>`
-    : '';
   return `
-  <section class="hero" data-hero aria-labelledby="${p.id}-title">
-    ${scene}
+  <section class="hero${p.scene ? ' hero--scene' : ''}" data-hero aria-labelledby="${p.id}-title">
+    ${p.scene ? `<div class="hero__scene" aria-hidden="true">${sceneLayers(p.scene)}</div>` : ''}
     <div class="hero__sticky">
       <div class="poster" data-poster>
         ${rule('poster__rule')}
@@ -60,13 +68,13 @@ function hero(p) {
           ${stars('panel__stars--l')}${stars('panel__stars--r')}
           ${side(h.sideLeft, 'panel__side--l')}
           ${side(h.sideRight, 'panel__side--r')}
-          <div class="panel__foot">
+          ${h.credits ? `<div class="panel__foot">
             <ul class="panel__credits">
               ${h.credits.slice(0, 2).map((c) => `<li>${esc(c)}</li>`).join('')}
               <li class="panel__cue"><a class="hero__cue" href="#${p.id}-tese" data-anchor><span>Role para descobrir</span><i aria-hidden="true"></i></a></li>
               ${h.credits.slice(2).map((c) => `<li>${esc(c)}</li>`).join('')}
             </ul>
-          </div>
+          </div>` : ''}
         </div>
         <div class="hero__gl" data-gl-slot aria-hidden="true"></div>
       </div>
@@ -117,7 +125,6 @@ function ideas(p) {
       <li class="idea" style="--w:${Math.min(900, 200 + i * 100)}">
         <h3 class="idea__h">
           <button class="idea__row" type="button" aria-expanded="false" aria-controls="${id}" id="${id}-btn">
-            <span class="idea__n">${pad(i + 1)}</span>
             <span class="idea__title">${esc(it.title)}</span>
             <span class="idea__tag">${esc(it.tag)}</span>
             <span class="idea__icon">${I.plus}</span>
@@ -133,7 +140,8 @@ function ideas(p) {
     })
     .join('');
   return `
-  <section class="ideas sec-a" id="${p.id}-ideias" data-ideas>
+  <section class="ideas sec-a${sceneCls(p)}" id="${p.id}-ideias" data-ideas>
+    ${secScene(p)}
     <header class="ideas__head">
       <h2 class="ideas__title"><span class="ideas__name">${esc(p.name)}</span>
         <span class="ideas__paren">(<span>Explore as ideias &amp; conceitos</span>)</span></h2>
@@ -156,7 +164,6 @@ function featuredSteps(p, f) {
     .map(
       (s, i) => `
       <li class="fstep" data-step="${i}">
-        <p class="fstep__n">${pad(i + 1)} <span>/ ${pad(n)}</span></p>
         <h3 class="fstep__title">${esc(s.title)}</h3>
         <p class="fstep__text">${esc(s.text)}</p>
       </li>`,
@@ -265,7 +272,8 @@ function lab(p) {
   const ctl = (name, label, min, max, value) =>
     `<label class="ctl"><span class="ctl__label">${label}</span><input type="range" name="${name}" min="${min}" max="${max}" value="${value}"><output class="ctl__out">${value}</output></label>`;
   return `
-  <section class="lab sec-a" id="${p.id}-citacoes" data-lab>
+  <section class="lab sec-a${sceneCls(p)}" id="${p.id}-citacoes" data-lab>
+    ${secScene(p)}
     <div class="lab__panel">
       <div class="lab__top">
         <p class="kicker">${I.sparkle()}Laboratório de citações</p>
@@ -290,7 +298,6 @@ function lab(p) {
 /* ---------- Glossário (equivalente à seção de caracteres) ---------- */
 
 function glossary(p) {
-  const n = p.glossary.length;
   const items = p.glossary
     .map(
       (g, i) => `
@@ -307,7 +314,6 @@ function glossary(p) {
     <header class="gloss__head">
       <p class="kicker">${I.sparkle()}Glossário</p>
       <h2 class="gloss__title">Palavras de ${esc(p.name)}</h2>
-      <p class="gloss__count"><span data-gloss-i>01</span> / ${pad(n)}</p>
     </header>
     <div class="gloss__stage">
       <svg class="gloss__construct" viewBox="0 0 800 800" fill="none" aria-hidden="true">
@@ -339,7 +345,8 @@ function life(p) {
     )
     .join('');
   return `
-  <section class="life sec-a" id="${p.id}-vida" data-life>
+  <section class="life sec-a${sceneCls(p)}" id="${p.id}-vida" data-life>
+    ${secScene(p)}
     <header class="life__head">
       <p class="kicker">${I.sparkle()}A história</p>
       <h2 class="life__title">${esc(l.title)}</h2>
@@ -436,7 +443,8 @@ function footer() {
     .map((p) => `<li><a class="uline" href="${p.readMore.href}" target="_blank" rel="noopener noreferrer">${esc(p.name)} · Stanford Encyclopedia</a></li>`)
     .join('');
   return `
-<footer class="sf" data-footer>
+<footer class="sf has-scene" data-footer>
+  ${philosophers.map((p) => secScene(p, ` data-scene-for="${p.id}" hidden`)).join('')}
   <div class="sf__top">
     <p class="sf__thanks">Obrigado pela visita</p>
     ${I.flourish('sf__flourish')}

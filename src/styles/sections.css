@@ -4,6 +4,18 @@
 
 .ph__body { position: relative; z-index: 1; }
 
+/* ----- Paisagem atrás das seções claras e do rodapé (filósofos com `scene`) -----
+   A imagem fica presa à tela (sticky) enquanto a seção passa e é recortada nas bordas dela;
+   as camadas deslizam com --shift (ver initScenes). Um véu na cor do tema mantém a leitura. */
+.has-scene { position: relative; isolation: isolate; --mute: color-mix(in srgb, var(--fg) 82%, transparent); }
+.sec-scene { position: absolute; inset: 0; z-index: -1; clip-path: inset(0); pointer-events: none; --amp: 1.6; }
+.sec-scene__pin { position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: hidden; }
+.sec-scene__pin::after {
+  content: ''; position: absolute; inset: 0;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+}
+.has-scene .lab__panel { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+
 /* ----- Tese: entra por cima do hero com cantos arredondados (clip-mask do Solare) ----- */
 .thesis {
   position: relative; overflow: hidden;
@@ -129,7 +141,7 @@
 .idea__row {
   position: relative; isolation: isolate;
   width: 100%;
-  display: grid; grid-template-columns: 8rem minmax(0, 1fr) 28rem 5.2rem; align-items: center; gap: 2rem;
+  display: grid; grid-template-columns: minmax(0, 1fr) 28rem 5.2rem; align-items: center; gap: 2rem;
   padding: 2.6rem 1.6rem;
   text-align: left;
   transition: color .6s var(--ease);
@@ -139,9 +151,6 @@
   background: var(--fg);
   transform: scaleY(0); transform-origin: 50% 100%;
   transition: transform .7s var(--ease);
-}
-.idea__n {
-  font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%; letter-spacing: .08em;
 }
 .idea__title {
   font-size: 6.6rem; line-height: 1; letter-spacing: -.035em;
@@ -170,12 +179,12 @@
 .idea.is-open .idea__panel { grid-template-rows: 1fr; }
 .idea__inner {
   overflow: hidden; min-height: 0;
-  display: grid; grid-template-columns: 8rem minmax(0, 1fr) 28rem 5.2rem; gap: 2rem;
+  display: grid; grid-template-columns: minmax(0, 1fr) 28rem 5.2rem; gap: 2rem;
   padding: 0 1.6rem;
 }
-.idea__text { grid-column: 2; display: grid; gap: 1.2em; max-width: 78rem; padding: 1rem 0 4.4rem; font-size: max(2.2rem, 16px); line-height: 1.45; }
+.idea__text { grid-column: 1; display: grid; gap: 1.2em; max-width: 78rem; padding: 1rem 0 4.4rem; font-size: max(2.2rem, 16px); line-height: 1.45; }
 .idea__src {
-  grid-column: 3 / 5; align-self: start;
+  grid-column: 2 / 4; align-self: start;
   display: flex; gap: 1.2rem; align-items: flex-start;
   padding-top: 1.6rem;
   font: 700 var(--t-micro) / 1.5 var(--f-wide); font-stretch: 110%;
@@ -189,14 +198,13 @@
   .ideas__name { font-size: 6.4rem; }
   .ideas__paren { font-size: 3.6rem; }
   .ideas__paren span { max-width: 13rem; font-size: .9rem; }
-  .idea__row { grid-template-columns: 3.2rem minmax(0, 1fr) 3.6rem; grid-template-rows: auto auto; gap: .4rem 1.2rem; padding: 2rem 0; }
-  .idea__n { grid-row: 1 / 3; align-self: start; padding-top: .8rem; }
+  .idea__row { grid-template-columns: minmax(0, 1fr) 3.6rem; grid-template-rows: auto auto; gap: .4rem 1.2rem; padding: 2rem 0; }
   .idea__title { font-size: 3.4rem; }
-  .idea__tag { grid-column: 2; grid-row: 2; font-size: 1.5rem; }
-  .idea__icon { grid-column: 3; grid-row: 1 / 3; width: 3.6rem; height: 3.6rem; }
-  .idea__inner { grid-template-columns: 3.2rem minmax(0, 1fr); padding: 0; gap: 1.2rem; }
-  .idea__text { grid-column: 2; padding-bottom: 1.6rem; font-size: 1.6rem; }
-  .idea__src { grid-column: 2; padding: 0 0 3rem; font-size: .9rem; }
+  .idea__tag { grid-column: 1; grid-row: 2; font-size: 1.5rem; }
+  .idea__icon { grid-column: 2; grid-row: 1 / 3; width: 3.6rem; height: 3.6rem; }
+  .idea__inner { grid-template-columns: minmax(0, 1fr); padding: 0; gap: 1.2rem; }
+  .idea__text { grid-column: 1; padding-bottom: 1.6rem; font-size: 1.6rem; }
+  .idea__src { grid-column: 1; padding: 0 0 3rem; font-size: .9rem; }
 }
 
 /* ----- Destaque com rolagem fixada (método socrático / caverna) ----- */
@@ -205,28 +213,29 @@
   position: sticky; top: 0;
   height: 100vh; height: 100svh;
   display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 6rem;
-  padding: 10rem var(--gutter) 6rem;
+  /* em cima, espaço para o cabeçalho fixo; texto e círculo ficam centrados na mesma linha */
+  padding: max(10rem, 90px) var(--gutter) 6rem;
   overflow: hidden;
 }
 .feat__copy { position: relative; display: grid; gap: 2.4rem; align-content: center; max-width: 60rem; }
+/* tamanhos limitados também pela altura da tela, para o bloco de texto sempre caber */
 .feat__title {
-  font-size: 9.6rem; font-weight: 300; font-style: italic; line-height: .92; letter-spacing: -.045em;
+  font-size: min(9.6rem, 10svh); font-weight: 300; font-style: italic; line-height: .92; letter-spacing: -.045em;
   font-variation-settings: 'opsz' 144, 'SOFT' 0;
 }
 .feat__intro { font: italic 400 var(--t-body) / 1.4 var(--f-display); color: var(--mute); }
 .feat__intro cite { display: block; margin-top: .6em; font: 800 var(--t-micro) / 1.3 var(--f-wide); font-stretch: 125%; text-transform: uppercase; letter-spacing: .06em; color: var(--fg); }
-.feat__steps { position: relative; min-height: 26rem; margin-top: 3rem; }
+/* os passos dividem a mesma célula: a caixa tem a altura do passo mais longo */
+.feat__steps { position: relative; display: grid; margin-top: 3rem; }
 .fstep {
-  position: absolute; inset: 0 0 auto;
+  grid-area: 1 / 1;
   opacity: 0; transform: translateY(3rem);
   transition: opacity .6s var(--ease), transform .9s var(--ease);
   pointer-events: none;
 }
 .fstep.is-active { opacity: 1; transform: none; pointer-events: auto; }
-.fstep__n { font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%; letter-spacing: .1em; margin-bottom: 2rem; }
-.fstep__n span { color: var(--mute); }
-.fstep__title { font-size: 6rem; font-weight: 400; line-height: 1; letter-spacing: -.03em; margin-bottom: 1.6rem; }
-.fstep__text { font-size: max(2.2rem, 16px); line-height: 1.45; max-width: 50rem; }
+.fstep__title { font-size: min(6rem, 6.5svh); font-weight: 400; line-height: 1; letter-spacing: -.03em; margin-bottom: 1.6rem; }
+.fstep__text { font-size: max(min(2.2rem, 2.6svh), 16px); line-height: 1.45; max-width: 50rem; }
 .feat__bar { height: 1px; background: var(--line); }
 .feat__bar span { display: block; height: 100%; background: var(--fg); transform-origin: left; transform: scaleX(var(--p, 0)); }
 
@@ -436,7 +445,6 @@ input[type='range']::-moz-range-thumb {
 .gloss__head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2rem; }
 .gloss__head .kicker { justify-self: start; }
 .gloss__title { font: italic 300 5.6rem / 1 var(--f-display); letter-spacing: -.03em; }
-.gloss__count { justify-self: end; font: 800 var(--t-micro) / 1 var(--f-wide); font-stretch: 125%; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
 .gloss__stage { position: relative; height: 66rem; margin-top: 4rem; touch-action: pan-y; }
 .gloss__construct {
   position: absolute; left: 50%; top: 50%; width: 66rem; height: 66rem;
@@ -592,8 +600,7 @@ input[type='range']::-moz-range-thumb {
   .feat__copy { gap: 1rem; }
   .feat__title { font-size: 4.2rem; }
   .feat__intro { font-size: 1.4rem; }
-  .feat__steps { min-height: 19rem; margin-top: .6rem; }
-  .fstep__n { margin-bottom: .8rem; }
+  .feat__steps { margin-top: .6rem; }
   .fstep__title { font-size: 3rem; margin-bottom: .8rem; }
   .fstep__text { font-size: 1.5rem; }
   .fword { font-size: 4.2rem; }

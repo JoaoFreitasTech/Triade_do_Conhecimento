@@ -7,6 +7,14 @@ export default {
   theme: 'socrates',
   model: { src: 'models/socrates.glb', scale: 1, yaw: 0 },
   readMore: { label: 'Ler mais', href: 'https://plato.stanford.edu/entries/socrates/' },
+  // Paisagem em camadas (do fundo para a frente) atrás do hero, das seções claras e do rodapé.
+  // speed: quanto a camada sobe enquanto a área passa pela tela; quanto mais perto, mais rápido.
+  scene: [
+    { src: 'img/socrates-bg-0.webp', speed: '1vh' },
+    { src: 'img/socrates-bg-1.webp', speed: '3.5vh' },
+    { src: 'img/socrates-bg-2.webp', speed: '6vh' },
+    { src: 'img/socrates-bg-3.webp', speed: '11vh' },
+  ],
 
   hero: {
     eyebrow: 'O moscardo de Atenas',
@@ -18,15 +26,6 @@ export default {
       title: 'O julgamento',
       text: 'Em 399 a.C. foi acusado de impiedade e de corromper a juventude. Condenado, recusou a fuga e bebeu a cicuta.',
     },
-    credits: ['Atenas', 'Ágora', 'Maiêutica', 'Cicuta'],
-    // Paisagem em camadas atrás do pôster (do fundo para a frente). speed: quanto a camada sobe
-    // enquanto a seção seguinte cobre o hero; quanto mais perto, mais rápido.
-    scene: [
-      { src: 'img/socrates-bg-0.webp', speed: '2vh' },
-      { src: 'img/socrates-bg-1.webp', speed: '6vh' },
-      { src: 'img/socrates-bg-2.webp', speed: '11vh' },
-      { src: 'img/socrates-bg-3.webp', speed: '18vh' },
-    ],
   },
 
   thesis: {

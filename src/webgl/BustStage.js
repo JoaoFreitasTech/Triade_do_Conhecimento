@@ -27,6 +27,7 @@ const PosterShader = {
     uReveal: { value: 0 },
     uRes: { value: new THREE.Vector2(1, 1) },
     uFade: { value: new THREE.Vector2(0, 0.2) },
+    uDim: { value: 1 },
   },
   vertexShader: /* glsl */ `
     varying vec2 vUv;
@@ -35,7 +36,7 @@ const PosterShader = {
   fragmentShader: /* glsl */ `
     uniform sampler2D tDiffuse;
     uniform vec3 uC0, uC1, uC2, uC3, uEdge;
-    uniform float uTime, uReveal;
+    uniform float uTime, uReveal, uDim;
     uniform vec2 uRes, uFade;
     varying vec2 vUv;
 
@@ -65,9 +66,9 @@ const PosterShader = {
       float grain = hash(px + floor(uTime * 24.0) * 7.13) - 0.5;
       float stip = hash(floor(vUv * uRes * 0.5) + 3.7) - 0.5;
       l += grain * 0.10 + stip * 0.14 * (1.0 - abs(l * 2.0 - 1.0));
-      // a base do busto se dissolve na escuridão do painel
+      // a base do busto se dissolve na escuridão do painel (uDim = 0: só transparência, sem escurecer)
       float fade = smoothstep(uFade.x, uFade.y, vUv.y);
-      l *= mix(0.25, 1.0, fade);
+      l *= mix(mix(1.0, 0.25, uDim), 1.0, fade);
       vec3 col = ramp(l);
 
       // Revelação por dissolução, de baixo para cima, com borda incandescente.
@@ -205,7 +206,7 @@ export class BustStage {
     this.active = false;
   }
 
-  // frame: { cx, top, bottom, maxW } em px relativos ao canvas
+  // frame: { cx, top, bottom, maxW, fade?, dim? } em px relativos ao canvas
   setFrame(frame) {
     this.frame = frame;
     this.layout();
@@ -240,6 +241,7 @@ export class BustStage {
     this.pivot.position.set((f.cx - w / 2) * k, (h / 2 - f.bottom) * k, 0);
     const y0 = 1 - f.bottom / h;
     this.poster.uniforms.uFade.value.set(y0, y0 + ((f.bottom - f.top) * (f.fade ?? 0.5)) / h);
+    this.poster.uniforms.uDim.value = f.dim ?? 1;
   }
 
   setScroll(p) { this.state.scroll = p; }

@@ -62,6 +62,8 @@ function layout(root, stage) {
   const inner = name.querySelector('.poster__name-in');
   const panel = root.querySelector('[data-panel]');
   const mobile = window.matchMedia('(max-width: 649px)').matches;
+  // com paisagem atrás (painel transparente) a base do busto só some, sem escurecer, e mais perto do pé
+  const scene = !!root.querySelector('.hero--scene');
 
   name.style.setProperty('--name-size', '100px');
   const w = inner.getBoundingClientRect().width;
@@ -78,7 +80,8 @@ function layout(root, stage) {
     top: nr.top - base.top + nr.height * (mobile ? 0.1 : 0.28),
     bottom: pr.bottom - base.top,
     maxW: pr.width * (mobile ? 0.92 : 0.46),
-    fade: mobile ? 0.3 : 0.5,
+    fade: scene ? 0.2 : mobile ? 0.3 : 0.5,
+    dim: scene ? 0 : 1,
   });
 }
 
